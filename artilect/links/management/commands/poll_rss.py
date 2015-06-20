@@ -12,7 +12,7 @@ import requests
 
 from mezzanine.generic.models import Rating
 
-from drum.links.models import Link
+from links.models import Link
 
 
 class Command(BaseCommand):

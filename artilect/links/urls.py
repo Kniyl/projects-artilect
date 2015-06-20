@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from drum.links.views import LinkList, LinkCreate, LinkDetail, CommentList, TagList
+from links.views import LinkList, LinkCreate, LinkDetail, CommentList, TagList
 
 
 urlpatterns = patterns("",

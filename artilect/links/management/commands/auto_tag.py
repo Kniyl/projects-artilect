@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand
 from mezzanine.generic.models import AssignedKeyword, Keyword
 from mezzanine.utils.urls import slugify
 
-from drum.links.models import Link
+from links.models import Link
 
 
 class Command(BaseCommand):

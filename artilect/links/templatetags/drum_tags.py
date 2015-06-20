@@ -4,8 +4,8 @@ from collections import defaultdict
 from django import template
 from django.template.defaultfilters import timesince
 
-from drum.links.utils import order_by_score
-from drum.links.views import CommentList, USER_PROFILE_RELATED_NAME
+from links.utils import order_by_score
+from links.views import CommentList, USER_PROFILE_RELATED_NAME
 
 
 register = template.Library()

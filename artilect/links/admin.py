@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.db import connection
 
 from mezzanine.core.admin import DisplayableAdmin
-from drum.links.models import Link
+from links.models import Link
 
 
 class LinkAdmin(DisplayableAdmin):
