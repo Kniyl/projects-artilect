@@ -199,8 +199,9 @@ INSTALLED_APPS = (
     "mezzanine.blog",
     "mezzanine.forms",
     "mezzanine.galleries",
-    "mezzanine.twitter",
-    # "mezzanine.accounts",
+    "mezzanine.accounts",
+    'presentation',
+    # "mezzanine.twitter",
     # "mezzanine.mobile",
 )
 
@@ -228,7 +229,7 @@ MIDDLEWARE_CLASSES = (
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     # Uncomment if using internationalisation or localisation
-    # 'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
