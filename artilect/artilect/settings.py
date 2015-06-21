@@ -300,6 +300,13 @@ FILEBROWSER_EXTENSIONS = {
 }
 
 APPEND_SLASH = True
+SEARCH_MODEL_CHOICES = (
+    "pages.Page",
+    "blog.BlogPost",
+    "links.Link",
+    "wiki.WikiArticle",
+    "presentation.Presentation",
+)
 
 ##################
 # LOCAL SETTINGS #

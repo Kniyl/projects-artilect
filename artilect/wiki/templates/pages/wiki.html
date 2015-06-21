@@ -1,0 +1,63 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags keyword_tags i18n %}
+
+{% block main %}{{ block.super}}
+
+{% editable page.wiki.content %}
+{{ page.wiki.content|richtext_filters|safe }}
+{% endeditable %}
+
+Vous pouvez <a href="{% url "wiki_list" %}">visualiser la liste complète des articles du wiki</a>
+ou bien <a href="{% url "wiki_create" %}">créer un nouvel article</a>.
+
+{% if this_category_list %}
+La liste des articles de wiki associés à cette catégorie est disponible ci-dessous&nbsp;
+{% for article in this_category_list %}
+
+{% editable article.title %}
+<h2>
+    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+</h2>
+{% endeditable %}
+
+{% editable article.publish_date %}
+<h6 class="post-meta">
+    {% trans "Posted by" %}:
+    {% with article.user as author %}
+    <a href="{% url "wiki_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
+    {% endwith %}
+    {% blocktrans with sometime=article.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
+</h6>
+{% endeditable %}
+
+{% editable article.content %}
+{{ article.description_from_content|safe }}
+{% endeditable %}
+
+<div class="blog-list-detail">
+    {% keywords_for article as tags %}
+    {% if tags %}
+    <ul class="list-inline tags">
+    {% trans "Tags" %}:
+    {% spaceless %}
+    {% for tag in tags %}
+    <li><a href="{% url "wiki_list_tag" tag.slug %}" class="tag">{{ tag }}</a>{% if not forloop.last %}, {% endif %}</li>
+    {% endfor %}
+    {% endspaceless %}
+    </ul>
+    {% endif %}
+    <p>
+    <a href="{{ article.get_absolute_url }}">{% trans "read more" %}</a>
+    /
+    <a href="{{ article.get_absolute_url }}#comments">
+        {% blocktrans count comments_count=article.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %}
+    </a>
+    </p>
+</div>
+{% endfor %}
+
+{% pagination_for this_category_list %}
+{% endif %}
+
+{% endblock %}

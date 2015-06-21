@@ -1,0 +1,46 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags i18n %}
+
+{% block main %}{{ block.super}}
+
+{% editable page.presentationcategory.content %}
+{{ page.presentationcategory.content|richtext_filters|safe }}
+{% endeditable %}
+
+Vous pouvez <a href="{% url "presentation_list" %}">visualiser la liste complète des présentations du lundi soir</a>
+ou bien <a href="{% url "presentation_create" %}">soumettre une présentation pour un lundi à venir</a>.
+
+{% if this_category_list %}
+La liste des présentations associés à cette catégorie est disponible ci-dessous&nbsp;
+{% for article in this_category_list %}
+
+{% editable article.title %}
+<h2>
+    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+</h2>
+{% endeditable %}
+
+{% editable article.publish_date %}
+<h6 class="post-meta">
+    {% trans "Posted by" %}:
+    {% with article.user as author %}
+    <a href="{% url "presentation_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
+    {% endwith %}
+    {% blocktrans with sometime=article.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
+</h6>
+{% endeditable %}
+
+{% editable article.content %}
+{{ article.description_from_content|safe }}
+{% endeditable %}
+
+<div class="blog-list-detail">
+    <p><a href="{{ article.get_absolute_url }}">{% trans "read more" %}</a></p>
+</div>
+{% endfor %}
+
+{% pagination_for this_category_list %}
+{% endif %}
+
+{% endblock %}
