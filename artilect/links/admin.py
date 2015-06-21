@@ -7,22 +7,45 @@ from django.db import connection
 from mezzanine.core.admin import DisplayableAdmin
 from links.models import Link
 
+from wiki.models import Wiki, WikiArticle
+
 
 class LinkAdmin(DisplayableAdmin):
-
     list_display = ("id", "title", "link", "status", "publish_date",
                     "user", "comments_count", "rating_sum")
     list_display_links = ("id",)
-    list_editable = ("title", "link", "status")
+    list_editable = ("title", "status")
     list_filter = ("status", "user__username")
-    search_fields = ("title", "link", "user__username", "user__email")
+    search_fields = ("title", "link", "description", "user__username", "user__email")
     ordering = ("-publish_date",)
 
     fieldsets = (
         (None, {
-            "fields": ("title", "link", "status", "publish_date", "user"),
+            "fields": ("title", "link", "description", "status", "publish_date", "user"),
         }),
     )
+
+    actions = ["set_as_wiki"]
+
+    def set_as_wiki(self, request, queryset):
+        try:
+            # Todo: utiliser un formulaire avec les données post pour récupérer la catégorie voulue
+            wiki = Wiki.objects.all()[0]
+        except:
+            wiki = None
+        for link in queryset:
+            content = "<p>%s</p>" % link.description
+            if link.link:
+                content = '<p>Voir la <a href="%s">référence</p>%s' % (link.link, content)
+            article = WikiArticle(title=link.title, content=content, user=link.user)
+            article.save()
+            if wiki:
+                article.wikis.add(wiki)
+            for comment in link.comments.all():
+                article.comments.add(comment)
+            article.save()
+        queryset.delete()
+    set_as_wiki.short_description = "Transformer ces idées en articles de wiki"
 
 
 def delete_keywords(modeladmin, request, queryset):
@@ -34,7 +57,6 @@ def delete_keywords(modeladmin, request, queryset):
 
 
 class KeywordAdmin(admin.ModelAdmin):
-
     ordering = ["title"]
     list_display = ["id", "title", "slug"]
     list_editable = ["title", "slug"]

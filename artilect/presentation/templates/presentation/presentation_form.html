@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block meta_title %}Soumission d'une présentation du lundi soir{% endblock %}
+{% block title %}Soumission d'une présentation du lundi soir{% endblock %}
+
+{% load mezzanine_tags %}
+
+{% block main %}
+{% errors_for form %}
+<form method="post">
+<fieldset>{% fields_for form %}</fieldset>
+<div class="actions">
+    <input class="btn btn-warning btn-large" type="submit" value="Soumettre la présentation">
+</div>
+</form>
+{% endblock %}

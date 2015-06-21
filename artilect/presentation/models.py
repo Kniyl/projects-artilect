@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 
 from mezzanine.core.fields import FileField
 from mezzanine.core.models import Displayable, Ownable, RichText
@@ -15,6 +16,11 @@ class Presentation(Displayable, Ownable, RichText):
     relevant_files = FileField(verbose_name="Archive de la présentation",
                                upload_to=upload_to("presentation.Presentation.relevant_files", "presentations"),
                                max_length=1000, null=True, blank=True)
+
+    def get_absolute_url(self):
+        url_name = "presentation_post_detail"
+        kwargs = {"slug": self.slug}
+        return reverse(url_name, kwargs=kwargs)
 
 
 class PresentationCategory(Page, RichText):

@@ -1,29 +1,40 @@
 {% extends "base.html" %}
-{% load i18n future mezzanine_tags drum_tags %}
+{% load i18n mezzanine_tags accounts_tags drum_tags %}
 
-{% block meta_title %}{{ profile_user.username }}{% endblock %}
+{% block meta_title %}{{ profile_user|username_or:"get_full_name" }}{% endblock %}
 {% block title %}{{ profile_user|get_profile }}{% endblock %}
 {% block body_id %}account{% endblock %}
 
-{% block main %}
-{% if profile_user == request.user %}
-<div class="pull-right">
-    <a class="btn btn-large btn-primary btn-profile" href="{% url "profile_update" %}">Update profile</a>
-</div>
-{% endif %}
-<div class="clearfix">
+{% block breadcrumb_menu %}
+{{ block.super }}
+<li>{{ profile_user|username_or:"get_full_name" }}</li>
+{% endblock %}
 
+{% block main %}
+<div class="row">
+<div class="profile-image col-md-12">
+    <img class="img-thumbnail" src="{% gravatar_url profile_user.email 128 %}">
+</div>
+<div class="profile-content col-md-12">
     {% with profile_user|get_profile as profile %}
     {% if profile.bio %}
     <p class="bio">{{ profile.bio|urlize|linebreaks }}</p>
     {% endif %}
     {% if profile.website %}
-    <p class="bio">Website: {{ profile.website|urlize }}</p>
+    <p class="bio">Site internet&nbsp;: {{ profile.website|urlize }}</p>
     {% endif %}
-    {% endwith %}
-
+</div>
+</div>
+<div class="row">
+{% if profile_user == request.user %}
+<div class="pull-right col-md-12">
+  <a class="btn btn-large btn-primary btn-profile" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
+</div>
+{% endif %}
+<div class="clearfix col-md-12">
     <a href="{% url "comment_list_user" profile_user.username %}">comments ({{ profile_user.comment_comments.count }})</a> |
     <a href="{% url "link_list_user" profile_user.username %}">links ({{ profile_user.links.published.count }})</a>
 
+</div>
 </div>
 {% endblock %}

@@ -5,6 +5,7 @@ from future.builtins import int
 from re import sub, split
 from time import time
 from operator import ior
+from functools import reduce
 
 try:
     from urllib.parse import urlparse
@@ -30,7 +31,6 @@ USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 
 class Link(Displayable, Ownable):
-
     link = models.URLField(null=True,
         blank=(not getattr(settings, "LINK_REQUIRED", False)))
     rating = RatingField()
@@ -64,7 +64,6 @@ class Link(Displayable, Ownable):
 
 
 class Profile(models.Model):
-
     user = models.OneToOneField(USER_MODEL)
     website = models.URLField(blank=True)
     bio = models.TextField(blank=True)

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% load mezzanine_tags keyword_tags i18n %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block main %}
+
+{% if page %}
+{% block presentation_list_pagecontent %}
+{% if page.get_content_model.content %}
+    {% editable page.get_content_model.content %}
+    {{ page.get_content_model.content|richtext_filters|safe }}
+    {% endeditable %}
+{% endif %}
+{% endblock %}
+{% endif %}
+
+{% for article in object_list %}
+{% block presentation_list_post_title %}
+{% editable article.title %}
+<h2>
+    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+</h2>
+{% endeditable %}
+{% endblock %}
+{% block presentation_list_post_metainfo %}
+{% editable article.publish_date %}
+<h6 class="post-meta">
+    {% trans "Posted by" %}:
+    {% with article.user as author %}
+    <a href="{% url "presentation_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
+    {% endwith %}
+    {% blocktrans with sometime=article.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
+</h6>
+{% endeditable %}
+{% endblock %}
+
+{% block presentation_list_post_content %}
+{% editable article.content %}
+{{ article.description_from_content|safe }}
+{% endeditable %}
+{% endblock %}
+
+{% block presentation_list_post_links %}
+<div class="blog-list-detail">
+    <p><a href="{{ article.get_absolute_url }}">{% trans "read more" %}</a></p>
+</div>
+{% endblock %}
+{% empty %}
+<p>{{ no_data }}</p>
+{% endfor %}
+
+{% pagination_for object_list %}
+{% endblock %}

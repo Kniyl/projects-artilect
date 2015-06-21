@@ -199,9 +199,10 @@ INSTALLED_APPS = (
     "mezzanine.blog",
     "mezzanine.forms",
     "mezzanine.galleries",
+    'links',
     "mezzanine.accounts",
     'presentation',
-    'links',
+    'wiki',
     # "mezzanine.twitter",
     # "mezzanine.mobile",
 )
@@ -268,6 +269,24 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_GRAPPELLI,
 )
 
+######################
+# ACCOUNT MANAGEMENT #
+######################
+
+ACCOUNTS_APPROVAL_REQUIRED = True
+ACCOUNTS_PROFILE_VIEWS_ENABLED = True
+ACCOUNTS_VERIFICATION_REQUIRED = True
+AUTH_PROFILE_MODULE = "links.Profile"
+
+#################
+# DRUM SETTINGS #
+#################
+
+ALLOWED_DUPLICATE_LINK_HOURS = 24 * 7 * 3
+ITEMS_PER_PAGE = 20
+LINK_REQUIRED = False
+AUTO_TAG = False
+
 ###############
 # OTHER STUFF #
 ###############
@@ -279,6 +298,8 @@ FILEBROWSER_EXTENSIONS = {
     'Video': ['.mov','.wmv','.mpeg','.mpg','.avi','.rm'],
     'Audio': ['.mp3','.mp4','.wav','.aiff','.midi','.m4p']
 }
+
+APPEND_SLASH = True
 
 ##################
 # LOCAL SETTINGS #

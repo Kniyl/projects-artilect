@@ -15,9 +15,9 @@ from mezzanine.conf import settings
 from mezzanine.generic.models import ThreadedComment, Keyword
 from mezzanine.utils.views import paginate
 
-from drum.links.forms import LinkForm
-from drum.links.models import Link
-from drum.links.utils import order_by_score
+from links.forms import LinkForm
+from links.models import Link
+from links.utils import order_by_score
 
 
 # Returns the name to be used for reverse profile lookups from the user

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load mezzanine_tags keyword_tags comment_tags i18n %}
+
+{% block meta_description %}{% metablock %}{{ object.description }}{% endmetablock %}{% endblock %}
+{% block meta_title %}{{ object.title }}{% endblock %}
+{% block title %}<a href="{{ object.url }}">{{ object.title }}</a>{% endblock %}
+
+{% block main %}
+
+{% block wiki_detail_postedby %}
+{% editable object.publish_date %}
+<h6 class="post-meta">
+    {% trans "Posted by" %}:
+    {% with object.user as author %}
+    <a href="{% url "profile" author.username %}">{{ author.get_full_name|default:author.username }}</a>
+    {% endwith %}
+    {% blocktrans with sometime=object.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
+</h6>
+{% endeditable %}
+{% endblock %}
+
+{% block wiki_detail_commentlink %}
+<p>
+    (<a href="#comments">{% spaceless %}
+    {% blocktrans count comments_count=object.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %}
+    {% endspaceless %}</a>)
+</p>
+{% endblock %}
+
+{% block wiki_detail_keywords %}
+{% keywords_for object as tags %}
+{% if tags %}
+{% spaceless %}
+<ul class="list-inline-tags">
+    <li>{% trans "Tags" %}:</li>
+    {% for tag in tags %}
+    <li><a href="{% url "wiki_list_tag" tag.slug %}">{{ tag }}</a>{% if not forloop.last %}, {% endif %}</li>
+    {% endfor %}
+</ul>
+{% endspaceless %}
+{% endif %}
+{% endblock %}
+
+{% block wiki_detail_content %}
+{% editable object.content %}
+{{ object.content|richtext_filters|safe }}
+{% endeditable %}
+{% endblock %}
+
+{% block wiki_detail_comments %}
+{% comments_for object %}
+{% endblock %}
+{% endblock %}

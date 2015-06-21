@@ -6,31 +6,38 @@ from django.views.generic import ListView, CreateView, DetailView, TemplateView
 from mezzanine.conf import settings
 from mezzanine.utils.views import paginate
 
-from presentation.models import Presentation
-from presentation.forms import PresentationForm
+from wiki.models import WikiArticle
+from wiki.forms import WikiForm
 
 from links.views import USER_PROFILE_RELATED_NAME
 
 
-class PresentationView(object):
+class WikiView(object):
     def get_queryset(self):
-        return Presentation.objects.published().select_related(
+        return WikiArticle.objects.published().select_related(
             "user",
             "user__%s" % USER_PROFILE_RELATED_NAME,
         )
 
 
-class PresentationDetail(PresentationView, DetailView):
+class WikiDetail(WikiView, DetailView):
     def get_context_data(self, **kwargs):
-        context = super(PresentationDetail, self).get_context_data(**kwargs)
+        context = super(WikiDetail, self).get_context_data(**kwargs)
         user = self.request.user
         context["authenticated_user"] = user.is_authenticated() and user.is_active
         return context
 
 
-class PresentationList(PresentationView, ListView):
+class WikiList(WikiView, ListView):
+    def get_queryset(self):
+        qs = super(WikiList, self).get_queryset()
+        tag = self.kwargs.get("tag")
+        if tag:
+            qs = qs.filter(keywords__keyword__slug=tag)
+        return qs.prefetch_related("keywords__keyword")
+
     def get_context_data(self, **kwargs):
-        context = super(PresentationList, self).get_context_data(**kwargs)
+        context = super(WikiList, self).get_context_data(**kwargs)
         try:
             username = self.kwargs["username"]
         except KeyError:
@@ -41,24 +48,26 @@ class PresentationList(PresentationView, ListView):
             lookup = {"username__iexact": username, "is_active": True}
             profile_user = get_object_or_404(users, **lookup)
             qs = context["object_list"].filter(user=profile_user)
+        context["profile_user"] = profile_user
+        context["no_data"] = "Il n’y a aucune donnée à récupérer pour cette requête"
         context["object_list"] = paginate(qs, self.request.GET.get("page", 1),
             settings.ITEMS_PER_PAGE, settings.MAX_PAGING_LINKS)
-        context["title"] = "Présentations du lundi soir"
-        context["profile_user"] = profile_user
-        context['no_data'] = "Il n'y a aucune présentation de disponible ici."
+        context["title"] = "Wiki"
         return context
 
 
-class PresentationCreate(CreateView):
-    form_class = PresentationForm
-    model = Presentation
+class WikiCreate(CreateView):
+    form_class = WikiForm
+    model = WikiArticle
 
     @classmethod
     def as_view(cls, **initkwargs):
-        view = super(PresentationCreate, cls).as_view(**initkwargs)
+        view = super(WikiCreate, cls).as_view(**initkwargs)
         return login_required(view)
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        form.instance.gen_description = False
+        form.instance.content = '<p>Contenu auto-généré</p>'
         info(self.request, "Article créé avec succès, vous pouvez commencer à l’éditer")
-        return super(PresentationCreate, self).form_valid(form)
+        return super(WikiCreate, self).form_valid(form)
