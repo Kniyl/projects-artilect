@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static "css/drum.css" %}">{% endblock %}
+{% block extra_js %}{{ block.super }}<script src="{% static "js/drum.js" %}"></script>{% endblock %}
+
 {% block meta_title %}New Link{% endblock %}
 {% block title %}New Link{% endblock %}
 

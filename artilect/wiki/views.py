@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib.messages import info
 from django.contrib.auth.models import User
 from django.views.generic import ListView, CreateView, DetailView, TemplateView
@@ -59,11 +58,6 @@ class WikiList(WikiView, ListView):
 class WikiCreate(CreateView):
     form_class = WikiForm
     model = WikiArticle
-
-    @classmethod
-    def as_view(cls, **initkwargs):
-        view = super(WikiCreate, cls).as_view(**initkwargs)
-        return login_required(view)
 
     def form_valid(self, form):
         form.instance.user = self.request.user

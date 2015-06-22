@@ -1,4 +1,8 @@
-{% load mezzanine_tags rating_tags i18n %}
+{% load mezzanine_tags rating_tags i18n staticfiles %}
+
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static "css/drum.css" %}">{% endblock %}
+{% block extra_js %}{{ block.super }}<script src="{% static "js/drum.js" %}"></script>{% endblock %}
+
 
 <div class="rating">
 

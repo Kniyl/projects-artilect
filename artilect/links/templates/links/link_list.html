@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
-{% load mezzanine_tags rating_tags keyword_tags drum_tags future %}
+{% load mezzanine_tags rating_tags keyword_tags drum_tags staticfiles %}
+
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static "css/drum.css" %}">{% endblock %}
+{% block extra_js %}{{ block.super }}<script src="{% static "js/drum.js" %}"></script>{% endblock %}
 
 {% block meta_title %}{{ title|default:"Home" }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
