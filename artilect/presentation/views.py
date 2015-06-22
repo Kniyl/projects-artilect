@@ -21,11 +21,7 @@ class PresentationView(object):
 
 
 class PresentationDetail(PresentationView, DetailView):
-    def get_context_data(self, **kwargs):
-        context = super(PresentationDetail, self).get_context_data(**kwargs)
-        user = self.request.user
-        context["authenticated_user"] = user.is_authenticated() and user.is_active
-        return context
+    pass
 
 
 class PresentationList(PresentationView, ListView):
