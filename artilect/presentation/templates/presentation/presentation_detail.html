@@ -28,7 +28,7 @@
 
 {% block presentation_detail_files %}
 {% editable object.relevant_files %}
-<a class="btn btn-default btn-large" href="{{ MEDIA_URL }}{{ object.relevant_files.file }}">Fichier associé</a>
+<a class="btn btn-default btn-large" href="{{ MEDIA_URL }}{{ object.relevant_files.url }}">Fichier associé</a>
 {% endeditable %}
 {% endblock %}
 {% endblock %}

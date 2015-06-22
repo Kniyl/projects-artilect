@@ -13,7 +13,7 @@ class Presentation(Displayable, Ownable, RichText):
     """
 
     categories = models.ManyToManyField("PresentationCategory", verbose_name="Catégories", blank=True)
-    relevant_files = FileField(verbose_name="Archive de la présentation",
+    relevant_files = models.FileField(verbose_name="Archive de la présentation",
                                upload_to=upload_to("presentation.Presentation.relevant_files", "presentations"),
                                max_length=1000, null=True, blank=True)
 
