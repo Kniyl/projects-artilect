@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from mezzanine.core.fields import FileField
 from mezzanine.core.models import Displayable, Ownable, RichText
 from mezzanine.generic.fields import CommentsField
+from mezzanine.core.fields import RichTextField
 from mezzanine.pages.models import Page
 from mezzanine.utils.models import upload_to
 
@@ -15,6 +16,14 @@ class WikiArticle(Displayable, Ownable, RichText):
 
     wikis = models.ManyToManyField("Wiki", verbose_name="Wikis", blank=True)
     comments = CommentsField()
+
+    lundi_soir = RichTextField(blank=True, null=True)
+    lundi_files = models.FileField(verbose_name="Archive de la présentation", upload_to="presentations",
+                                   max_length=1000, null=True, blank=True)
+
+    project = RichTextField(blank=True, null=True)
+    resume = RichTextField(blank=True, null=True)
+    histoire = RichTextField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Article de Wiki"

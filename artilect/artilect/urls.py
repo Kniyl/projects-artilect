@@ -28,7 +28,6 @@ if settings.USE_MODELTRANSLATION:
 urlpatterns += patterns('',
     ("^brainstorming/", include("links.urls")),
     ("^wiki/", include("wiki.urls")),
-    ("^lundi_soirs/", include("presentation.urls")),
 
     # We don't want to presume how your homepage works, so here are a
     # few patterns you can use to set it up.

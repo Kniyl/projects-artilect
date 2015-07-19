@@ -6,7 +6,7 @@ from mezzanine.conf import settings
 from mezzanine.utils.views import paginate
 
 from wiki.models import WikiArticle
-from wiki.forms import WikiForm
+from wiki.forms import WikiForm, PresentationForm
 
 from links.views import USER_PROFILE_RELATED_NAME
 
@@ -55,13 +55,24 @@ class WikiList(WikiView, ListView):
         return context
 
 
-class WikiCreate(CreateView):
-    form_class = WikiForm
+class CreateBase(CreateView):
     model = WikiArticle
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.instance.gen_description = False
-        form.instance.content = '<p>Contenu auto-généré</p>'
+        wiki = form.instance
+        wiki.user = self.request.user
+        wiki.gen_description = False
+        wiki.content = '<p>Contenu auto-généré</p>'
+        wiki.resume = '<p></p>'
+        wiki.histoire = '<p></p>'
+        wiki.project = '<p></p>'
+        wiki.lundi_soir = wiki.lundi_soir or '<p></p>'
         info(self.request, "Article créé avec succès, vous pouvez commencer à l’éditer")
-        return super(WikiCreate, self).form_valid(form)
+        return super(CreateBase, self).form_valid(form)
+
+class WikiCreate(CreateBase):
+    form_class = WikiForm
+
+class PresentationCreate(CreateBase):
+    form_class = PresentationForm
+    template_name = 'wiki/presentation_form.html'

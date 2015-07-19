@@ -191,6 +191,7 @@ INSTALLED_APPS = (
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.staticfiles",
+    'links',
     'wiki',
     "mezzanine.boot",
     "mezzanine.conf",
@@ -200,9 +201,7 @@ INSTALLED_APPS = (
     "mezzanine.blog",
     "mezzanine.forms",
     "mezzanine.galleries",
-    'links',
     "mezzanine.accounts",
-    'presentation',
     # "mezzanine.twitter",
     # "mezzanine.mobile",
 )

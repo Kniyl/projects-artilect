@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 
-{% load mezzanine_tags keyword_tags comment_tags i18n %}
+{% load mezzanine_tags keyword_tags comment_tags i18n staticfiles %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static "mezzanine/js/"|add:settings.JQUERY_UI_FILENAME %}"></script>
+<script>
+(function($){
+  $(document).ready(function(){
+    $("#wikitabs").tabs({});
+  });
+})(jQuery);
+</script>
+{% endblock %}
 
 {% block meta_description %}{% metablock %}{{ object.description }}{% endmetablock %}{% endblock %}
 {% block meta_title %}{{ object.title }}{% endblock %}
@@ -43,9 +55,46 @@
 {% endblock %}
 
 {% block wiki_detail_content %}
+{% comment %}
 {% editable object.content %}
 {{ object.content|richtext_filters|safe }}
 {% endeditable %}
+{% endcomment %}
+<div id="wikitabs">
+  <ul>
+    <li><a href="#wikiresume">Résumé</a></li>
+    <li><a href="#wikiprojet">Projet</a></li>
+    <li><a href="#wikipresentation">Présentation du lundi</a></li>
+    <li><a href="#wikihistoire">Histoire</a></li>
+  </ul>
+  <div id="wikiresume">
+    Bite
+    {% editable object.resume %}
+    {{ object.resume|richtext_filters|safe }}
+    {% endeditable %}
+  </div>
+  <div id="wikiprojet">
+    Chatte
+    {% editable object.project %}
+    {{ object.project|richtext_filters|safe }}
+    {% endeditable %}
+  </div>
+  <div id="wikipresentation">
+    Couilles
+    {% editable object.lundi_soir %}
+    {{ object.lundi_soir|richtext_filters|safe }}
+    {% endeditable %}
+    {% if object.lundi_files %}
+    <a href="{{ object.lundi_files.url }}">Fichier associé</a>
+    {% endif %}
+  </div>
+  <div id="wikihistoire">
+    Poils
+    {% editable object.histoire %}
+    {{ object.histoire|richtext_filters|safe }}
+    {% endeditable %}
+  </div>
+</div>
 {% endblock %}
 
 {% block wiki_detail_comments %}

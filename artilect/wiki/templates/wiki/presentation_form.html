@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block meta_title %}Nouvelle présentation du lundi soir{% endblock %}
+{% block title %}Nouvelle présentation du lundi soir{% endblock %}
+
+{% load mezzanine_tags %}
+
+{% block main %}
+{% errors_for form %}
+<form method="post" enctype="multipart/form-data">
+<fieldset>{% fields_for form %}</fieldset>
+<div class="actions">
+    <input class="btn btn-warning btn-large" type="submit" value="Créer un article">
+</div>
+</form>
+{% endblock %}

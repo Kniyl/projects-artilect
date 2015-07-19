@@ -9,7 +9,9 @@
 {% endeditable %}
 
 Vous pouvez <a href="{% url "wiki_list" %}">visualiser la liste complète des articles du wiki</a>
-ou bien <a href="{% url "wiki_create" %}">créer un nouvel article</a>.
+ou bien <a href="{% url "wiki_create" %}">créer un nouvel article</a>. Une page spécifique vous
+permet de créer un nouvel article pour une <a href="{% url "presentation_create" %}">présentation
+du lundi soir</a>.
 
 {% if this_category_list %}
 La liste des articles de wiki associés à cette catégorie est disponible ci-dessous&nbsp;
