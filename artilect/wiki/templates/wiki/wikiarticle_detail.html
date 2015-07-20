@@ -68,19 +68,16 @@
     <li><a href="#wikihistoire">Histoire</a></li>
   </ul>
   <div id="wikiresume">
-    Bite
     {% editable object.resume %}
     {{ object.resume|richtext_filters|safe }}
     {% endeditable %}
   </div>
   <div id="wikiprojet">
-    Chatte
     {% editable object.project %}
     {{ object.project|richtext_filters|safe }}
     {% endeditable %}
   </div>
   <div id="wikipresentation">
-    Couilles
     {% editable object.lundi_soir %}
     {{ object.lundi_soir|richtext_filters|safe }}
     {% endeditable %}
@@ -89,7 +86,6 @@
     {% endif %}
   </div>
   <div id="wikihistoire">
-    Poils
     {% editable object.histoire %}
     {{ object.histoire|richtext_filters|safe }}
     {% endeditable %}
